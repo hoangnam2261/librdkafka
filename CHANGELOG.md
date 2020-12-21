@@ -1,12 +1,10 @@
 # librdkafka v1.6.0
 
-librdkafka v1.6.0 is a feature release adding support for
-[KIP-429 Incremental rebalancing](https://cwiki.apache.org/confluence/display/KAFKA/KIP-429%3A+Kafka+Consumer+Incremental+Rebalance+Protocol)
-and the sticky consumer group partition assignor.
+librdkafka v1.6.0 is feature release:
 
- * Incremental rebalancing and assignments - FIXME
- * Sticky consumer group partition assignor - FIXME
- * Sticky producer partitioning (`sticky.partitioning.linger.ms`) -
+ * [KIP-429 Incremental rebalancing](https://cwiki.apache.org/confluence/display/KAFKA/KIP-429%3A+Kafka+Consumer+Incremental+Rebalance+Protocol) with sticky
+   consumer group partition assignor (KIP-54) (by @mhowlett).
+ * [KIP-480 Sticky producer partitioning](https://cwiki.apache.org/confluence/display/KAFKA/KIP-480%3A+Sticky+Partitioner) (`sticky.partitioning.linger.ms`) -
    achieves higher throughput and lower latency through sticky selection
    of random partition.
  * AdminAPI: Add support for `DeleteRecords()`, `DeleteGroups()` and
@@ -18,12 +16,13 @@ and the sticky consumer group partition assignor.
 
 ## Upgrade considerations
 
- * Sticky producer partitioning is enabled by default (10 milliseconds) which
-   affects the distribution of randomly partitioned messages, where previously
-   these messages would be evenly distributed over the available partitions
-   they are now partitioned to a single partition for the duration of the
-   sticky time (10 milliseconds by default) before a new random sticky
-   partition is selected.
+ * Sticky producer partitioning (`sticky.partitioning.linger.ms`) is
+   enabled by default (10 milliseconds) which affects the distribution of
+   randomly partitioned messages, where previously these messages would be
+   evenly distributed over the available partitions they are now partitioned
+   to a single partition for the duration of the sticky tim
+   (10 milliseconds by default) before a new random sticky partition
+   is selected.
  * The new KIP-447 transactional producer scalability guarantees are only
    supported on Apache Kafka 2.5 or later, on earlier releases you will
    need to use one producer per input partition for EOS. This limitation
